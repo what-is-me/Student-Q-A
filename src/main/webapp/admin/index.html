@@ -10,9 +10,8 @@
     <script src="../lib/jquery.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.3/js/bootstrap.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-table/1.21.1/bootstrap-table.min.js"></script>
-    <script src="../lib/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/x-editable/1.5.1/bootstrap-editable/js/bootstrap-editable.min.js"></script>
-    <script src="../lib/bootstrap-table/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.21.1/locale/bootstrap-table-zh-CN.min.js"></script>
+
 
     <title>用户管理</title>
 </head>
@@ -52,26 +51,14 @@
         }, {
             field: 'name',
             title: '用户名',
-            sortable: true,
-            editable: {
-                url: "../user",
-                method: "post"
-            }
+            sortable: true
         }, {
             field: 'password',
-            title: '密码',
-            editable: {
-                url: "../user",
-                method: "post"
-            }
+            title: '密码'
         }, {
             field: 'type',
             title: '权限',
-            sortable: true,
-            editable: {
-                url: "../user",
-                method: "post"
-            }
+            sortable: true
         },
             {
                 field: 'uid',
