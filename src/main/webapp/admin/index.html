@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/bootstrap-icons/1.10.2/font/bootstrap-icons.min.css">
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/x-editable/1.5.1/bootstrap-editable/css/bootstrap-editable.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/bootstrap-table/1.21.1/bootstrap-table.min.css">
+    <script src="../lib/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.3/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-table/1.21.1/bootstrap-table.min.js"></script>
+    <script src="../lib/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/x-editable/1.5.1/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+    <script src="../lib/bootstrap-table/extensions/editable/bootstrap-table-editable.js"></script>
+
+    <title>用户管理</title>
+</head>
+<body>
+<div id="users">
+    <div class="row" id="toolbar">
+        <div class="col-sm-3">
+            <button class="btn btn-w-m btn-primary glyphicon glyphicon-plus" data-toggle="modal"
+                    href="#addType" data-keyboard="true" data-backdrop="false"
+                    id="btn_add">新增
+            </button>
+        </div>
+    </div>
+    <table id="grid" data-show-columns="true"></table>
+</div>
+<script>
+
+    const queryUrl = '../user';
+    $('#grid').bootstrapTable({
+        toolbar: "#toolbar",
+        url: queryUrl,                      //请求后台的URL（*）
+        method: 'GET',                      //请求方式（*）
+        striped: true, // 是否显示行间隔色
+        pageNumber: 1, // 初始化加载第一页
+        pagination: true, // 是否分页
+        sidePagination: 'client', // server:服务器端分页|client：前端分页
+        pageSize: 10, // 单页记录数
+        pageList: [1, 5, 20, 30],
+        showRefresh: true,// 刷新按钮
+        search: true,
+        showColumns: false,
+        showToggle: true,
+        idField:"uid",
+        columns: [{
+            field: 'uid',
+            title: '用户ID',
+        }, {
+            field: 'name',
+            title: '用户名',
+            sortable: true,
+            editable: {
+                url: "../user",
+                method: "post"
+            }
+        }, {
+            field: 'password',
+            title: '密码',
+            editable: {
+                url: "../user",
+                method: "post"
+            }
+        }, {
+            field: 'type',
+            title: '权限',
+            sortable: true,
+            editable: {
+                url: "../user",
+                method: "post"
+            }
+        },
+            {
+                field: 'uid',
+                title: '操作',
+                width: 200,
+                align: 'center',
+                valign: 'middle',
+                formatter: actionFormatter
+            }]
+    })
+
+    function actionFormatter(value, row, index) {
+        return "<a href='javascript:;' class='btn btn-xs' onclick=\"DeleteByIds('" + value + "')\">删除<span class='glyphicon glyphicon-remove'></span></a>";
+    }
+
+    function DeleteByIds(uid) {
+        $.ajax({
+            method: "delete",
+            url: "../user?uid=" + uid,
+            async: false,
+            success: function (data) {
+                switch (data["success"]) {
+                    case 1:
+                        $("#grid").bootstrapTable('refresh');
+                        break
+                    case 0:
+                        alert("删除失败")
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>
