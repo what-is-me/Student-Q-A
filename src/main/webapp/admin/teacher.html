@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/bootstrap-icons/1.10.2/font/bootstrap-icons.min.css">
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.3/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/x-editable/1.5.1/bootstrap-editable/css/bootstrap-editable.css"
+        rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/bootstrap-table/1.21.1/bootstrap-table.min.css">
+  <script src="../lib/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.3/js/bootstrap.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-table/1.21.1/bootstrap-table.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap-table/1.21.1/locale/bootstrap-table-zh-CN.min.js"></script>
+
+
+  <title>老师详情</title>
+  <style>
+    #sidebar{
+      width: 20%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+    }
+    #main_page{
+      width: 75%;
+      position: absolute;
+      right: 2.5%;
+      top: 0;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-light" id="sidebar">
+  <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+    <span class="fs-4">管理界面</span>
+  </a>
+  <hr>
+  <ul class="nav nav-pills flex-column mb-auto">
+    <li class="nav-item">
+      <a href="./index.html" class="nav-link link-dark">
+        用户管理
+      </a>
+    </li>
+    <li>
+      <a href="./teacher.html" class="nav-link active">
+        教师管理
+      </a>
+    </li>
+    <li>
+      <a href="./course.html" class="nav-link link-dark">
+        课程管理
+      </a>
+    </li>
+    <li>
+      <a href="../login.html" class="nav-link link-dark">
+        切换用户
+      </a>
+    </li>
+  </ul>
+  <hr>
+</div>
+<div id="main_page">
+  <table id="grid" data-show-columns="true"></table>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">添加或修改</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="uid">编号</label>
+          <input type="text" name="uid" id="uid" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="dept">职称</label>
+          <input type="text" name="dept" id="dept" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="describe">描述</label>
+          <input type="text" name="describe" id="describe" class="form-control">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModal()">
+          <span class="" aria-hidden="true"></span>关闭
+        </button>
+        <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal">
+          <span class="" aria-hidden="true"></span>保存
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const queryUrl = '../teacher';
+  $('#grid').bootstrapTable({
+    toolbar: "#toolbar",
+    url: queryUrl,                      //请求后台的URL（*）
+    method: 'GET',                      //请求方式（*）
+    striped: true, // 是否显示行间隔色
+    pageNumber: 1, // 初始化加载第一页
+    pagination: true, // 是否分页
+    sidePagination: 'client', // server:服务器端分页|client：前端分页
+    pageSize: 10, // 单页记录数
+    pageList: [1, 5, 20, 30],
+    showRefresh: true,// 刷新按钮
+    search: true,
+    showColumns: false,
+    showToggle: true,
+    idField: "uid",
+    columns: [{
+      field: 'uid',
+      title: '老师ID',
+    }, {
+      field: 'dept',
+      title: '职称'
+    }, {
+      field: 'describe',
+      title: '描述',
+      width: 400
+    },
+      {
+        field: 'uid',
+        title: '操作',
+        width: 200,
+        align: 'center',
+        valign: 'middle',
+        formatter: actionFormatter
+      }]
+  })
+
+  function actionFormatter(value, row) {
+    return "<a href='javascript:;' class='btn btn-outline-primary' onclick=\"EditByIds(" + row["uid"] + ",'" + row["dept"] +  "','" + row["describe"] + "')\">修改<span class='glyphicon glyphicon-remove'></span></a>"
+  }
+
+  function EditByIds(uid, dept,describe) {
+    $('.modal-body input[name = "uid"]').val(uid);
+    $('.modal-body input[name = "dept"]').val(dept);
+    $('.modal-body input[name = "describe"]').val(describe);
+    $('#myModal').modal('show');
+  }
+
+  $("#btn_add").click(function () {
+    $('#myModal').modal('show');
+  })
+
+  function closeModal() {
+    $('#myModal').modal('hide');
+  }
+
+  $("#btn_submit").click(function () {
+    let data={
+      uid:$('.modal-body input[name = "uid"]').val(),
+      dept:$('.modal-body input[name = "dept"]').val(),
+      describe:$('.modal-body input[name = "describe"]').val(),
+    }
+    $.post(queryUrl,data,function (){
+      $("#grid").bootstrapTable('refresh');
+      closeModal()
+    })
+  })
+
+</script>

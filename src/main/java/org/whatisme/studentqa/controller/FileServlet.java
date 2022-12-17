@@ -1,7 +1,7 @@
 package org.whatisme.studentqa.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.whatisme.studentqa.tools.Transfer;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -73,7 +73,7 @@ public class FileServlet extends HttpServlet {
         if (parts.isEmpty()) {
             ret.put("success", 0);
             ret.put("message", "上传文件为空");
-            resp.getWriter().println(JSONObject.toJSONString(ret));
+            resp.getWriter().println(Transfer.toJson(ret));
             return;
         }
         Part part = (Part) parts.toArray()[0];
@@ -91,6 +91,6 @@ public class FileServlet extends HttpServlet {
         is.close();
         ret.put("success", 1);
         ret.put("url", "file?filename=" + filename);
-        resp.getWriter().println(JSONObject.toJSONString(ret));
+        resp.getWriter().println(Transfer.toJson(ret));
     }
 }

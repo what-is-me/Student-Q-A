@@ -1,5 +1,6 @@
 drop database if exists stu_qa;
 create database stu_qa collate utf8_unicode_ci;
+use stu_qa;
 create table stu_qa.user
 (
     uid        bigint primary key not null,
@@ -11,8 +12,7 @@ create table stu_qa.teacher
 (
     uid        bigint primary key not null,
     dept       varchar(10) comment '职称',
-    `describe` text,
-    foreign key (uid) references stu_qa.user (uid)
+    `describe` text
 );
 create table stu_qa.course
 (
@@ -21,7 +21,7 @@ create table stu_qa.course
     `describe` text,
     score      double default 60,
     uid        bigint,
-    forbidden  boolean,
+    forbidden  boolean default 0,
     foreign key (uid) references stu_qa.teacher (uid)
 );
 create table stu_qa.sc
@@ -53,4 +53,26 @@ create table stu_qa.questionBody
     foreign key (qid) references stu_qa.questionHead (qid),
     `name` varchar(20),
     `time` datetime
-)
+);
+
+-- trigger --
+create trigger t_in
+    after insert
+    on stu_qa.user
+    for each row
+begin
+    if new.type like 'teacher' then
+        if new.uid not in (select uid from stu_qa.teacher) then
+            insert into stu_qa.teacher(uid) values (new.uid);
+        end if;
+    end if;
+end;
+create trigger t_out
+    after delete
+    on stu_qa.user
+    for each row
+begin
+    if old.type like 'teacher' then
+        delete from stu_qa.teacher where uid = old.uid;
+    end if;
+end;

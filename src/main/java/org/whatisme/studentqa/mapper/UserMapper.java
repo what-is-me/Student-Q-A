@@ -27,7 +27,8 @@ public class UserMapper {
 
     public void replace(User user) throws SQLException {
         var map = Map.of("uid", String.valueOf(user.getUid()), "name", user.getName(), "password", user.getPassword(), "type", user.getType());
-        Sql.execute("replace into stu_qa.user(uid, name, password, type) VALUES (${uid},'${name}','${password}','${type}')", map);
+        Sql.execute("insert into stu_qa.user(uid, `name`, `password`, type) VALUES (${uid},'${name}','${password}','${type}') " +
+                "on duplicate key update `name`='${name}', `password`='${password}', type='${type}';", map);
     }
 
     public void deleteById(Long uid) throws SQLException {

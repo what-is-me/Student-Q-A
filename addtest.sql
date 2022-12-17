@@ -1,4 +1,15 @@
 use stu_qa;
-replace into stu_qa.user(uid, name, password, type) VALUES (1,'admin','password','admin');
-replace into stu_qa.user(uid, name, password, type) VALUES (2,'t1','password','teacher');
-replace into stu_qa.user(uid, name, password, type) VALUES (3,'s1','password','student');
+insert into stu_qa.user(uid, name, password, type) VALUES (1,'admin','password','admin');
+insert into stu_qa.user(uid, name, password, type) VALUES (2,'t1','password','teacher');
+insert into stu_qa.user(uid, name, password, type) VALUES (3,'t2','password','teacher');
+insert into stu_qa.user(uid, name, password, type) VALUES (4,'t3','password','teacher');
+insert into stu_qa.user(uid, name, password, type) VALUES (5,'t4','password','teacher');
+insert into stu_qa.user(uid, name, password, type) VALUES (6,'t5','password','teacher');
+insert into stu_qa.user(uid, name, password, type) VALUES (7,'s1','password','student');
+insert into stu_qa.user(uid, name, password, type) VALUES (8,'s2','password','student');
+insert into stu_qa.user(uid, name, password, type) VALUES (9,'s3','password','student');
+insert into stu_qa.user(uid, name, password, type) VALUES (10,'s4','password','student');
+insert into stu_qa.user(uid, name, password, type) VALUES (11,'s5','password','student');
+insert into stu_qa.course(cid, cname, `describe`, uid) VALUES (1,'数据结构','高级数据结构',2);
+insert into stu_qa.course(cid, cname, `describe`, uid) VALUES (2,'算法设计','算法',3);
+insert into stu_qa.course(cid, cname, `describe`, uid) VALUES (3,'人工智能','尖端学科',4);

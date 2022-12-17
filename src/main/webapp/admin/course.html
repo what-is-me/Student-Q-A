@@ -11,9 +11,7 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.3/js/bootstrap.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-table/1.21.1/bootstrap-table.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap-table/1.21.1/locale/bootstrap-table-zh-CN.min.js"></script>
-
-
-    <title>用户管理</title>
+    <title>课程管理</title>
     <style>
         #sidebar{
             width: 20%;
@@ -39,7 +37,7 @@
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-            <a href="./index.html" class="nav-link active">
+            <a href="./index.html" class="nav-link link-dark">
                 用户管理
             </a>
         </li>
@@ -49,7 +47,7 @@
             </a>
         </li>
         <li>
-            <a href="./course.html" class="nav-link link-dark">
+            <a href="./course.html" class="nav-link active">
                 课程管理
             </a>
         </li>
@@ -80,20 +78,28 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="uid">编号</label>
+                    <label for="cid">编号</label>
+                    <input type="text" name="cid" id="cid" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="cname">名称</label>
+                    <input type="text" name="cname" id="cname" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="describe">描述</label>
+                    <input type="text" name="describe" id="describe" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="score">评分</label>
+                    <input type="text" name="score" id="score" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="uid">老师编号</label>
                     <input type="text" name="uid" id="uid" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="name">姓名</label>
-                    <input type="text" name="name" id="name" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="type">身份</label>
-                    <input type="text" name="type" id="type" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="password">密码</label>
-                    <input type="text" name="password" id="password" class="form-control">
+                    <label for="forbidden">是否禁止提问</label>
+                    <input type="text" name="forbidden" id="forbidden" class="form-control">
                 </div>
             </div>
             <div class="modal-footer">
@@ -108,7 +114,7 @@
     </div>
 </div>
 <script>
-    const queryUrl = '../user';
+    const queryUrl = '../course';
     $('#grid').bootstrapTable({
         toolbar: "#toolbar",
         url: queryUrl,                      //请求后台的URL（*）
@@ -125,22 +131,29 @@
         showToggle: true,
         idField: "uid",
         columns: [{
+            field: 'cid',
+            title: '课程编号',
+        }, {
+            field: 'cname',
+            title: '课程名',
+            sortable: true
+        }, {
+            field: 'describe',
+            title: '描述'
+        }, {
+            field: 'score',
+            title: '评分',
+            sortable: true
+        }, {
             field: 'uid',
-            title: '用户ID',
-        }, {
-            field: 'name',
-            title: '用户名',
+            title: '教授老师编号',
             sortable: true
         }, {
-            field: 'password',
-            title: '密码'
-        }, {
-            field: 'type',
-            title: '身份',
-            sortable: true
+            field: 'forbidden',
+            title: '是否禁止提问'
         },
             {
-                field: 'uid',
+                field: 'cid',
                 title: '操作',
                 width: 200,
                 align: 'center',
@@ -150,15 +163,17 @@
     })
 
     function actionFormatter(value, row) {
-        return "<a href='javascript:;' class='btn btn-outline-primary' onclick=\"EditByIds(" + row["uid"] + ",'" + row["name"] + "','" + row["type"] + "','" + row["password"] + "')\">修改<span class='glyphicon glyphicon-remove'></span></a>" +
+        return "<a href='javascript:;' class='btn btn-outline-primary' onclick=\"EditByIds(" + row["cid"] + ",'" + row["cname"] + "','" + row["describe"] + "'," + row["score"] + "," + row["uid"] + "," + row["forbidden"] + ")\">修改<span class='glyphicon glyphicon-remove'></span></a>" +
             "<a href='javascript:;' class='btn btn-outline-danger' onclick=\"DeleteByIds('" + value + "')\">删除<span class='glyphicon glyphicon-remove'></span></a>"
     }
 
-    function EditByIds(uid, name, type, password) {
+    function EditByIds(cid, cname, describe, score, uid, forbidden) {
+        $('.modal-body input[name = "cid"]').val(cid);
+        $('.modal-body input[name = "cname"]').val(cname);
+        $('.modal-body input[name = "describe"]').val(describe);
+        $('.modal-body input[name = "score"]').val(score);
         $('.modal-body input[name = "uid"]').val(uid);
-        $('.modal-body input[name = "name"]').val(name);
-        $('.modal-body input[name = "type"]').val(type);
-        $('.modal-body input[name = "password"]').val(password);
+        $('.modal-body input[name = "forbidden"]').val(forbidden);
         $('#myModal').modal('show');
     }
 
@@ -171,13 +186,15 @@
     }
 
     $("#btn_submit").click(function () {
-        let data={
-            uid:$('.modal-body input[name = "uid"]').val(),
-            name:$('.modal-body input[name = "name"]').val(),
-            type:$('.modal-body input[name = "type"]').val(),
-            password:$('.modal-body input[name = "password"]').val()
+        let data = {
+            cid: $('.modal-body input[name = "cid"]').val(),
+            cname: $('.modal-body input[name = "cname"]').val(),
+            describe: $('.modal-body input[name = "describe"]').val(),
+            score: $('.modal-body input[name = "score"]').val(),
+            uid: $('.modal-body input[name = "uid"]').val(),
+            forbidden: $('.modal-body input[name = "forbidden"]').val()
         }
-        $.post(queryUrl,data,function (){
+        $.post(queryUrl, data, function () {
             $("#grid").bootstrapTable('refresh');
             closeModal()
         })
@@ -186,7 +203,7 @@
     function DeleteByIds(uid) {
         $.ajax({
             method: "delete",
-            url: queryUrl+"?uid=" + uid,
+            url: queryUrl + "?cid=" + uid,
             async: false,
             success: function (data) {
                 switch (data["success"]) {

@@ -7,7 +7,7 @@ public class JDBCtest {
 
     public static void main(String[] args) throws Exception {
         User user=new User();
-        user.setProperty("uid","1");
-        System.out.println(user);
+        user.setProperty("name","admin");
+        System.out.println(Long.valueOf(null));
     }
 }

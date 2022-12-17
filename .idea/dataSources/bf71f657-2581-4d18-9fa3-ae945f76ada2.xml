@@ -1064,6 +1064,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     </column>
     <column id="303" parent="291" name="forbidden">
       <DasType>tinyint(1)|0s</DasType>
+      <DefaultExpression>0</DefaultExpression>
       <Position>6</Position>
     </column>
     <foreign-key id="304" parent="291" name="course_ibfk_1">
@@ -1189,58 +1190,65 @@ cid</ColNames>
       <DasType>text|0s</DasType>
       <Position>3</Position>
     </column>
-    <foreign-key id="330" parent="295" name="teacher_ibfk_1">
-      <ColNames>uid</ColNames>
-      <RefColNames>uid</RefColNames>
-      <RefTableName>user</RefTableName>
-    </foreign-key>
-    <index id="331" parent="295" name="PRIMARY">
+    <index id="330" parent="295" name="PRIMARY">
       <ColNames>uid</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="332" parent="295" name="PRIMARY">
+    <key id="331" parent="295" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <check id="333" parent="296" name="user_chk_1">
+    <check id="332" parent="296" name="user_chk_1">
       <NameSurrogate>1</NameSurrogate>
       <Predicate>`type` in (_utf8mb4\&apos;student\&apos;,_utf8mb4\&apos;teacher\&apos;,_utf8mb4\&apos;admin\&apos;)</Predicate>
     </check>
-    <column id="334" parent="296" name="uid">
+    <column id="333" parent="296" name="uid">
       <DasType>bigint|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="335" parent="296" name="name">
+    <column id="334" parent="296" name="name">
       <DasType>varchar(50)|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="336" parent="296" name="password">
+    <column id="335" parent="296" name="password">
       <DasType>varchar(200)|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="337" parent="296" name="type">
+    <column id="336" parent="296" name="type">
       <DasType>varchar(20)|0s</DasType>
       <DefaultExpression>&apos;student&apos;</DefaultExpression>
       <Position>4</Position>
     </column>
-    <index id="338" parent="296" name="PRIMARY">
+    <index id="337" parent="296" name="PRIMARY">
       <ColNames>uid</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="339" parent="296" name="PRIMARY">
+    <key id="338" parent="296" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="340" parent="297" name="uid">
+    <trigger id="339" parent="296" name="t_in">
+      <Definer>root@localhost</Definer>
+      <Events>I</Events>
+      <SourceTextLength>199</SourceTextLength>
+      <Turn>after-row</Turn>
+    </trigger>
+    <trigger id="340" parent="296" name="t_out">
+      <Definer>root@localhost</Definer>
+      <Events>D</Events>
+      <SourceTextLength>113</SourceTextLength>
+      <Turn>after-row</Turn>
+    </trigger>
+    <column id="341" parent="297" name="uid">
       <DasType>bigint|0s</DasType>
       <Position>1</Position>
     </column>
-    <column id="341" parent="297" name="cid">
+    <column id="342" parent="297" name="cid">
       <DasType>bigint|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>

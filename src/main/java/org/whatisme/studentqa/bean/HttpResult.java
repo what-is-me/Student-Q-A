@@ -1,11 +1,10 @@
 package org.whatisme.studentqa.bean;
-
-import com.alibaba.fastjson.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.whatisme.studentqa.tools.BeanBase;
+import org.whatisme.studentqa.tools.Transfer;
 
 @Data
 @Builder
@@ -19,6 +18,6 @@ public class HttpResult extends BeanBase {
     public static HttpResult failResult = new HttpResult(0, null, null);
 
     public String toString() {
-        return JSONObject.toJSONString(this);
+        return Transfer.toJson(this);
     }
 }

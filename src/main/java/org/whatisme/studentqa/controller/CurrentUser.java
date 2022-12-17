@@ -1,10 +1,10 @@
 package org.whatisme.studentqa.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.whatisme.studentqa.bean.HttpResult;
 import org.whatisme.studentqa.bean.User;
 import org.whatisme.studentqa.mapper.UserMapper;
+import org.whatisme.studentqa.tools.Transfer;
 import org.whatisme.studentqa.tools.UTF8Servlet;
 
 import javax.servlet.ServletException;
@@ -20,7 +20,7 @@ public class CurrentUser extends UTF8Servlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doGet(req, resp);
-        resp.getWriter().println(JSONObject.toJSONString(req.getSession().getAttribute("user")));
+        resp.getWriter().println(Transfer.toJson(req.getSession().getAttribute("user")));
     }
     @Override//改密码
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

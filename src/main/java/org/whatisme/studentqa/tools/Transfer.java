@@ -1,22 +1,31 @@
 package org.whatisme.studentqa.tools;
 
-import com.alibaba.fastjson.JSONObject;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.Map;
 
 public class Transfer {
+    private static Gson gson=new GsonBuilder()
+            .setDateFormat("yyyy-MM-dd hh:mm:ss")
+            .create();
+    public static String toJson(Object obj){
+        return gson.toJson(obj);
+    }
     public static <T> T mapToObject(Map<String, Object> map, Class<T> beanClass) {
-        String jsonStr = JSONObject.toJSONString(map);
-        return JSONObject.parseObject(jsonStr, beanClass);
+        String jsonStr = gson.toJson(map);
+        return gson.fromJson(jsonStr, beanClass);
     }
 
     public static <T> T stringToObject(String s, Class<T> cls) {
-        return JSONObject.parseObject(s, cls);
+        return gson.fromJson(s, cls);
     }
 
     //java对象转map
     public static Map<String, Object> objectToMap(Object obj) {
-        String jsonStr = JSONObject.toJSONString(obj);
-        return JSONObject.parseObject(jsonStr);
+        String jsonStr = gson.toJson(obj);
+        return gson.fromJson(jsonStr,new TypeToken<Map<String, Object>>() {}.getType());
     }
 }
