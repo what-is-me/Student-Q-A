@@ -1,23 +1,20 @@
 package org.whatisme.studentqa.tools;
 
+import com.alibaba.druid.pool.DruidDataSourceFactory;
 import lombok.extern.slf4j.Slf4j;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
 public class Sql {
-    static Connection conn = null;
+    final private static DataSource ds;
     static {
-        try {
+        /*try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
             String url = "jdbc:mysql://127.0.0.1:3306/stu_qa?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8";
             String username = "root";
@@ -25,17 +22,27 @@ public class Sql {
             conn = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
             log.error(e.getMessage());
+        }*/
+        Properties pro = new Properties();
+        pro.setProperty("url", "jdbc:mysql://127.0.0.1:3306/stu_qa?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8");
+        pro.setProperty("username", "root");
+        pro.setProperty("password", "root");
+        pro.setProperty("filters", "wall");
+        try {
+            ds = DruidDataSourceFactory.createDataSource(pro);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
     public static void execute(String sql) throws SQLException {
         log.info(sql);
-        conn.createStatement().execute(sql);
+        ds.getConnection().createStatement().execute(sql);
     }
 
     public static List<HashMap<String, Object>> select(String sql) throws SQLException {
         log.info(sql);
-        ResultSet res = conn.createStatement().executeQuery(sql);
+        ResultSet res = ds.getConnection().createStatement().executeQuery(sql);
         List<HashMap<String, Object>> ret = new ArrayList<>();
         var rsmd = res.getMetaData();
         int colCount = rsmd.getColumnCount();
