@@ -4,6 +4,7 @@ import com.alibaba.druid.pool.DruidDataSourceFactory;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -37,12 +38,15 @@ public class Sql {
 
     public static void execute(String sql) throws SQLException {
         log.info(sql);
-        ds.getConnection().createStatement().execute(sql);
+        Connection conn = ds.getConnection();
+        conn.createStatement().execute(sql);
+        conn.close();
     }
 
     public static List<HashMap<String, Object>> select(String sql) throws SQLException {
         log.info(sql);
-        ResultSet res = ds.getConnection().createStatement().executeQuery(sql);
+        Connection conn = ds.getConnection();
+        ResultSet res = conn.createStatement().executeQuery(sql);
         List<HashMap<String, Object>> ret = new ArrayList<>();
         var rsmd = res.getMetaData();
         int colCount = rsmd.getColumnCount();
@@ -53,6 +57,7 @@ public class Sql {
             }
             ret.add(row);
         }
+        conn.close();
         return ret;
     }
 
