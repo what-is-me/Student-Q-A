@@ -56,10 +56,8 @@
         }
     })
     let unread = []
-    let unans = []
     $.get("/toasts", function (data) {
         unread = data["unread"]
-        //unans = data["unans"]
         let $dp = $(".dropdown-menu")
         $dp.empty()
         $dp.append($(`<li style="text-align: center"><strong>未读问题列表</strong><hr/></li>`))

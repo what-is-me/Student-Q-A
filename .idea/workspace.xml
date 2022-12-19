@@ -5,51 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f54334e-4855-412f-8dd4-6c624196ac93" name="变更" comment="完成">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/bean/CourseView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/controller/common/CourseQuestionsServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/controller/common/CoursesServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/controller/common/QuestionServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/controller/common/ToastsServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/controller/student/SelectCourseServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/controller/teacher/ChangeForbiddenStatusServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/mapper/QuestionMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/mapper/StudentMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/course.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/style.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/question.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/repassword.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/student/select-course.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tomcat.8080/work/Tomcat/localhost/ROOT/upload_6086fa6d_79e0_4a8d_be05_af9f8cfa2d2e_00000000.tmp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tomcat.8080/work/Tomcat/localhost/ROOT/upload_7407d468_2955_4d82_8e2b_db565a7c5244_00000002.tmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/bf71f657-2581-4d18-9fa3-ae945f76ada2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/bf71f657-2581-4d18-9fa3-ae945f76ada2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/bf71f657-2581-4d18-9fa3-ae945f76ada2/storage_v2/_src_/schema/stu_qa.-5fWyg.zip" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/bf71f657-2581-4d18-9fa3-ae945f76ada2/storage_v2/_src_/schema/stu_qa.-5fWyg.zip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/filter/LoginFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/addtest.sql" beforeDir="false" afterPath="$PROJECT_DIR$/addtest.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/create.sql" beforeDir="false" afterPath="$PROJECT_DIR$/create.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/bean/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/bean/Course.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/bean/HttpResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/bean/HttpResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/bean/QuestionBody.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/bean/QuestionBody.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/bean/QuestionHead.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/bean/QuestionHead.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/bean/Teacher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/bean/Teacher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/bean/Uc.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/bean/Uc.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/bean/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/bean/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/controller/CurrentUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/controller/CurrentUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/controller/FileServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/controller/FileServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/mapper/CourseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/mapper/CourseMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/mapper/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/tools/Sql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/tools/Sql.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/tools/Transfer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/tools/Transfer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/admin/course.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/admin/course.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/editor.md/editormd.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/editor.md/editormd.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/editor.md/plugins/file-dialog/file-dialog.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/editor.md/plugins/file-dialog/file-dialog.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/markdown-test.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/markdown-test.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/sign-up.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/sign-up.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/controller/LogSignServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/whatisme/studentqa/controller/LogSignServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/student/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/student/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/teacher/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/teacher/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/JDBCtest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/JDBCtest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -207,7 +166,7 @@
       <workItem from="1671252465410" duration="1806000" />
       <workItem from="1671263259291" duration="16793000" />
       <workItem from="1671329445294" duration="42730000" />
-      <workItem from="1671411551248" duration="5892000" />
+      <workItem from="1671411551248" duration="7326000" />
     </task>
     <task id="LOCAL-00001" summary="gitignore">
       <created>1670853801153</created>
@@ -237,7 +196,21 @@
       <option name="project" value="LOCAL" />
       <updated>1671252895378</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="完成">
+      <created>1671417845286</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1671417845286</updated>
+    </task>
+    <task id="LOCAL-00006" summary="完成">
+      <created>1671417860591</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1671417860591</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
