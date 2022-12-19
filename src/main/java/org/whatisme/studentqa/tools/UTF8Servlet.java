@@ -1,22 +1,13 @@
 package org.whatisme.studentqa.tools;
 
-import cn.pomit.mybatis.ProxyHandlerFactory;
-
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 
 public class UTF8Servlet extends HttpServlet {
-
-    protected <T> T getMapper(Class<T> cls) {
-        return ProxyHandlerFactory.getMapper(cls);
-    }
 
     private void flush(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("utf-8");
