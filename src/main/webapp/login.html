@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>登录</title>
     <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.3/css/bootstrap.min.css" rel="stylesheet">
-    <script src="lib/jquery.min.js"></script>
+    <script src="/lib/jquery.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.3/js/bootstrap.min.js"></script>
     <style>
         .loginForm {
@@ -53,11 +53,9 @@
 </div>
 <script>
     $("#login").click(function () {
-        $.ajax({
-            method: "get",
-            url: "Login?uid=" + $("#uid").val() + "&password=" + $("#password").val(),
-            async: false,
-            success: function (data) {
+        $.get(
+            "Login?uid=" + $("#uid").val() + "&password=" + $("#password").val(),
+            function (data) {
                 switch (data["success"]) {
                     case 1:
                         console.log("登录成功")
@@ -67,7 +65,7 @@
                         alert("登录失败")
                 }
             }
-        })
+        )
     })
 </script>
 </body>

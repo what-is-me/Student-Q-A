@@ -1,5 +1,6 @@
 package org.whatisme.studentqa.mapper;
 
+import org.whatisme.studentqa.bean.CourseView;
 import org.whatisme.studentqa.bean.User;
 import org.whatisme.studentqa.tools.Sql;
 
@@ -33,5 +34,13 @@ public class UserMapper {
 
     public void deleteById(Long uid) throws SQLException {
         Sql.execute("delete from stu_qa.user where uid=${uid}", Map.of("uid", uid.toString()));
+    }
+
+    public List<CourseView> listAllCourses(Long uid) throws Exception {
+        return Sql.select("select * from stu_qa.course_view where cid in (select cid from stu_qa.uc where uc.uid = ${uid})", Map.of("uid", uid.toString()), CourseView.class);
+    }
+
+    public List<CourseView> listAllCourses() throws Exception {
+        return Sql.select("select * from stu_qa.course_view;", new HashMap<>(), CourseView.class);
     }
 }

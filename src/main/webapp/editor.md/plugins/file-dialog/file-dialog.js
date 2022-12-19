@@ -1,14 +1,3 @@
-/*!
- * file (upload) dialog plugin for Editor.md
- *
- * @file        file-dialog.js
- * @author      what-is-me
- * @version     1.3.4
- * @updateTime  2022-12-9
- * {@link       https://github.com/pandao/editor.md}
- * @license     MIT
- */
-
 (function () {
 
     var factory = function (exports) {
@@ -51,7 +40,7 @@
                     })() +
                     "<br/>" +
                     "<label>" + fileLang.alt + "</label>" +
-                    "<input type=\"text\" value=\"" + selection + "\" data-alt />" +
+                    "<input type=\"text\" value=\"" + (selection == "" ? "附件" : selection) + "\" data-alt />" +
                     "<br/>" +
                     ("</form>");
 
@@ -81,9 +70,10 @@
                             }
 
                             var altAttr = (alt !== "") ? " \"" + alt + "\"" : "";
-
-                            cm.replaceSelection("[" + alt + "](" + url + altAttr + ")");
-
+                            if (alt == "")
+                                cm.replaceSelection("\n [" + alt + "](" + url + altAttr + ")  \n");
+                            else
+                                cm.replaceSelection("\n [附件](" + url + altAttr + ")  \n");
 
                             if (alt === "") {
                                 cm.setCursor(cursor.line, cursor.ch + 2);
@@ -142,7 +132,7 @@
             }
 
             dialog = editor.find("." + dialogName);
-            dialog.find("[type=\"text\"]").val("");
+            dialog.find("[type=\"text\"]").val("附件");
             dialog.find("[type=\"file\"]").val("");
 
             this.dialogShowMask(dialog);

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-icons/1.10.2/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <script src="../lib/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.3/js/bootstrap.min.js"></script>
+    <title>选课</title>
+</head>
+<body>
+<div class="container">
+    <div class="page-header" style="text-align: center">
+        <h1>选课列表</h1>
+    </div>
+</div>
+
+
+<form action="/select-course" method="post" style="width: 70%;position: absolute;left: 15%;top:5%">
+    <div id="courses"></div>
+    <button class="btn btn-primary" style="width: 20%;text-align: center;margin-left: 40%">提交</button>
+</form>
+<script>
+    $.get("/select-course", function (data) {
+        let $courses = $("#courses")
+        for (const course of data) {
+            let $container = $("<div class='card card-body container'></div>")
+            let $content = $("<div class='row'></div>")
+            let $text = $("<div class='col-md-10'></div>")
+            $text.append($("<h5>" + course["cname"] + "</h5>"))
+            $text.append($("<p class='card-text'>课程编号:" + course["cid"] + "<br>" +
+                "教师姓名:" + course["tname"] + "<br>" +
+                "课程描述:" + course["describe"] + "<br>" +
+                "课程评分:" + course["score"] + "</p>"))
+            $content.append($text)
+            $content.append($("<div class='col-sm align-items-center' style='position: relative'><input type='checkbox' class='center' name='cid' value='" + course["cid"] + "'/></div>"))
+            $container.append($content)
+            $courses.append($container)
+        }
+    })
+</script>
+</body>
+</html>

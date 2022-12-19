@@ -19,7 +19,7 @@ create table stu_qa.course
     cid        bigint primary key not null auto_increment,
     cname      varchar(20)        not null,
     `describe` text,
-    score      double default 60,
+    score      double  default 60,
     uid        bigint,
     forbidden  boolean default 0,
     foreign key (uid) references stu_qa.teacher (uid)
@@ -40,20 +40,31 @@ create table stu_qa.questionHead
 (
     qid     bigint auto_increment not null primary key,
     stuUid  bigint,
-    teaUid  bigint,
+    cid     bigint,
     title   varchar(200),
-    public  tinyint default 1,
-    stuRead tinyint default 1,
-    teaRead tinyint default 0,
-    teaAns  tinyint default 0
+    pub     tinyint  default 1,
+    stuRead tinyint  default 1,
+    teaRead tinyint  default 0,
+    teaAns  tinyint  default 0,
+    `time`  DATETIME default current_timestamp
 );
 create table stu_qa.questionBody
 (
     qid    bigint,
     foreign key (qid) references stu_qa.questionHead (qid),
+    qbid   bigint primary key auto_increment,
     `name` varchar(20),
-    `time` datetime
+    `text` longtext,
+    `time` datetime default current_timestamp
 );
+create view course_view as
+select course.*, user.name as tname
+from course
+         left join user on user.uid = course.uid;
+create view question_head_view as
+select questionhead.*, c.cname, c.tname, c.uid as teaUid, c.forbidden
+from stu_qa.questionhead
+         left join course_view c on questionhead.cid = c.cid;
 
 -- trigger --
 create trigger t_in

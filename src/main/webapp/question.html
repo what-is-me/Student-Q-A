@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="editor.md/css/editormd.min.css" rel="stylesheet"/>
+    <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-icons/1.10.2/font/bootstrap-icons.min.css"
+          rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <script src="/lib/jquery.min.js"></script>
+    <link href="/css/style.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.3/js/bootstrap.min.js"></script>
+    <script src="/editor.md/lib/marked.min.js"></script>
+    <script src="/editor.md/lib/prettify.min.js"></script>
+    <script src="/editor.md/editormd.js"></script>
+    <title>问题</title>
+<body>
+<div style="position: absolute;width: 40px;height: 40px;left: 0;top: 0;z-index: 999"><a
+        href="javascript:window.location.href=document.referrer;" id="back"><i
+        class="text-dark bi bi-arrow-return-left"></i></a>
+</div>
+<div class="container" id="head"></div>
+<div class="container" id="body">
+    <div class='card card-body container' id="card">
+        <button class="btn btn-outline-primary" id="btn_add">+</button>
+        <div id="editor"></div>
+    </div>
+</div>
+<script>
+    let editAll = []
+    $("#qbid").hide()
+    let queryUrl = "/question"
+    let cur_user = {}
+    $.get("/cur-user", function (data) {
+        cur_user = data
+        if (cur_user["type"] === "teacher") {
+            $("#addButton").hide()
+        }
+    })
+    const paramsStr = window.location.search
+    const params = new URLSearchParams(paramsStr)
+    let qid = params.get('qid')
+    let cid = params.get('cid')
+    $.get(queryUrl + "?qid=" + qid, function (data) {
+        console.log(data)
+        let questionHead = data["qhead"]
+        if (cid === "n")
+            $("#back").attr("href", "./index.html")
+        else
+            $("#back").attr("href", "course.html?cid=" + cid)
+        let questionBody = data["questions"]
+        let $head = $("#head")
+        $head.append($(`<h1 style="text-align: center">${questionHead["cname"]} | ${questionHead["title"]}</h1>`))
+        $head.append($(`<p style="text-align: center">发布时间：<span class="italic">${questionHead["time"]}</span></p>`))
+        let $body = $("#body")
+        for (const question of questionBody) {
+            let $container = $(`<div class='card card-body container' id="card${question["qbid"]}"></div>`)
+            $container.append($(`<p><strong>${question["name"]}</strong> 发表于 ${question["time"]}</p>`))
+            if (cur_user["type"] === "teacher" || question["name"] === cur_user["name"])
+                $container.append($(`<div style="position:absolute;right:10px;top:20px"><a href="javascript:editQuestion(${question["qbid"]})" class="btn btn-outline-primary" style="width:100px;display:inline">编辑</a>
+                        <a href="javascript:deleteQuestion(${question["qbid"]})" class="btn btn-outline-danger" style="width:100px;display:inline">删除</a></div>`))
+            $container.append($(`<div id="${"markdown-view" + question["qbid"]}"></div>`))
+            $container.append($(`<div id="editor${question["qbid"]}"></div>`))
+            $body.prepend($container)
+            editAll.push($("#editor" + question["qbid"]))
+            editormd.markdownToHTML("markdown-view" + question["qbid"], {
+                markdown: question["text"],
+                htmlDecode: "style,script,iframe",
+                tex: true
+            });
+        }
+        if ((cur_user["type"] !== "teacher" && questionHead["stuUid"] !== cur_user["uid"]) || questionHead["forbidden"]) {
+            $("#card").hide()
+        }
+        editAll.push($("#editor"))
+    })
+    $("#btn_add").click(function () {
+        editQuestion("")
+    })
+
+    function editQuestion(qbid) {
+        for (let edit of editAll) {
+            edit.empty()
+            edit.hide()
+        }
+        let $editorDiv = $("#editor" + qbid)
+        $editorDiv.show()
+        $editorDiv.append($("<textarea style=\"display:none;\" id=\"md\"></textarea>"))
+        $(".submitbtn").remove()
+        const editor = editormd("editor" + qbid, {
+            height: "600px",
+            markdown: "",
+            path: "editor.md/lib/",
+            imageUpload: true,
+            imageUploadURL: "./file",
+            fileUploadURL: "./file",
+            tex: true,
+            pageBreak: true
+        });
+        $("#card" + qbid).append($("<button class='btn btn-outline-primary submitbtn' onclick='submitmsg(" + qbid + ")'>提交</button>"))
+    }
+
+    function deleteQuestion(qbid) {
+        $.ajax({
+            method: "delete",
+            url: queryUrl + "?qbid=" + qbid,
+            async: false,
+            success: function () {
+                window.location.reload()
+            }
+        })
+    }
+
+    function closeModal() {
+        $('#myModal').modal('hide');
+    }
+
+    function submitmsg(qbid) {
+        let data = {
+            qid: qid,
+            qbid: qbid === "" ? null : qbid,
+            text: $("#md").val()
+        }
+        $.post(queryUrl, data, function (data) {
+            console.log(data)
+            window.location.reload()
+        })
+    }
+</script>
+</body>
+</html>

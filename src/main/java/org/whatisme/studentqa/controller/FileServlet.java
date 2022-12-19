@@ -11,10 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +22,11 @@ import java.util.UUID;
 @Slf4j
 public class FileServlet extends HttpServlet {
     private final static String filePath = "file";
+
+    static {
+        new File(filePath).mkdir();
+    }
+
     private static final Map<String, String> map = new HashMap<>();
 
     static {

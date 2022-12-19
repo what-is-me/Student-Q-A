@@ -2,9 +2,118 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-icons/1.10.2/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <script src="../lib/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.3/js/bootstrap.min.js"></script>
+    <title>课程列表</title>
 </head>
 <body>
+<div style="position: absolute !important;height:100% !important;width: 25% !important;left:0 !important;background: #E4DCD0;padding:5%;position: relative">
+    <ul class="nav flex-column center">
+        <li class="nav-item">
+            <a class="nav-link" href="/login.html">切换用户</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/course.html">所有问题</a>
+        </li>
+        <div class="dropdown dropend">
+            <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="unread"
+               role="button">未读问题</a>
+            <ul class="dropdown-menu" style="width: 300px;padding: 5px">
+                <li><a class="dropdown-item" href="#">链接 1</a></li>
+            </ul>
+        </div>
+        <li class="nav-item">
+            <a class="nav-link" href="/repassword.html">修改密码</a>
+        </li>
+    </ul>
 
+</div>
+<div style="position: absolute !important;height:100% !important;width: 75% !important;left:25% !important">
+    <div class="header container" id="head" style="margin-top: 20px">
+        <div class="input-group col-md-2">
+            <input class="form-control" id="search-text" name="search" placeholder="请输入课程名或者教师名" type="text">
+            <button class="btn btn-primary btn-search" onclick="search()">查找</button>
+        </div>
+    </div>
+    <hr/>
+    <div class="main-body" id="courses"></div>
+</div>
+<script>
+    var courses = []
+    var res_courses = []
+    $.get("./course", function (data) {
+        if (data.length === 0) {
+            window.location.href = "select-course.html";
+        } else {
+            courses = data
+            res_courses = courses
+            coursesShow()
+        }
+    })
+    let unread = []
+    let unans = []
+    $.get("/toasts", function (data) {
+        unread = data["unread"]
+        //unans = data["unans"]
+        let $dp = $(".dropdown-menu")
+        $dp.empty()
+        $dp.append($(`<li style="text-align: center"><strong>未读问题列表</strong><hr/></li>`))
+        for (const i in unread) {
+            $dp.append($(`<li><a class="dropdown-item" href="/question.html?qid=${unread[i]["qid"]}&cid=n">${Number(i) + 1}.${unread[i]["title"]}</a></li>`))
+        }
+        if (unread.length !== 0) {
+            $("#unread").append($(`<span class="badge rounded-pill bg-info text-dark">${unread.length}</span>`))
+        } else {
+            $dp.append($(`<li style="text-align: center">空</li>`))
+        }
+    })
+
+
+    let $courses = $("#courses")
+
+    function search() {
+        let word = $("#search-text").val()
+        console.log(word)
+        if (word === "") {
+            res_courses = courses
+        } else {
+            res_courses = []
+            console.log(res_courses)
+            for (const course of courses) {
+                if (course["cid"].toString().indexOf(word) !== -1
+                    || course["cname"].indexOf(word) !== -1
+                    || course["tname"].indexOf(word) !== -1) {
+                    res_courses.push(course)
+                }
+            }
+        }
+        console.log(res_courses)
+        coursesShow()
+    }
+
+    function coursesShow() {
+        $courses.empty()
+        for (const course of res_courses) {
+            if (course["forbidden"] === 1) continue//TODO
+            let $container = $("<div class='card card-body container'></div>")
+            let $content = $("<div class='row'></div>")
+            let $text = $("<div class='col-md-10'></div>")
+            $text.append($("<h5>" + course["cname"] + "</h5>"))
+            $text.append($("<p class='card-text'>课程编号:" + course["cid"] + "<br>" +
+                "教师姓名:" + course["tname"] + "<br>" +
+                "课程描述:" + course["describe"] + "<br>" +
+                "课程评分:" + course["score"] + "</p>"))
+            $content.append($text)
+            $content.append($("<div class='col-sm align-items-center' style='position: relative'><a class='btn btn-primary center' href='/course.html?cid=" + course["cid"] + "'>前往课程</a></div>"))
+            $container.append($content)
+            $courses.append($container)
+        }
+    }
+</script>
 </body>
 </html>

@@ -14,7 +14,7 @@
 <script src="editor.md/editormd.js"></script>
 <script type="text/javascript">
     $(function () {
-        var editor = editormd("editor", {
+        const editor = editormd("editor", {
             width: "100%",
             height: "640",
             markdown: "",
@@ -22,16 +22,7 @@
 
             imageUpload: true,
             imageUploadURL: "./file",
-            fileUploadURL:"./file",
-            /*toolbarIconsClass: {
-                file: "fa-file"
-            },
-            toolbarHandlers: {
-                file: function (cm, icon, cursor) {
-                    cm.setCursor(cursor.line, cursor.ch + 1);
-                    cm.replaceSelection("[filename](url)")
-                }
-            },*/
+            fileUploadURL: "./file",
             tex: true,
             pageBreak: true
         });

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-icons/1.10.2/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <script src="/lib/jquery.min.js"></script>
+    <link href="/css/style.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.3/js/bootstrap.min.js"></script>
+    <title>课程</title>
+</head>
+<body>
+<div style="position: absolute;width: 40px;height: 40px;left: 0;top: 0;z-index: 999"><a
+        href="./index.html"><i class="text-dark bi bi-arrow-return-left"></i></a>
+</div>
+<div class="container" id="head"></div>
+<div id="main">
+    <div class="input-group container" style="margin-top: 20px;margin-bottom: 20px">
+        <button class="btn btn-primary" id="addButton" onclick="addNewQuestion()">+添加新问题</button>
+        <label for="search-text">&emsp;&emsp;</label><input class="form-control" id="search-text" name="search"
+                                                            placeholder="请输入课程名,问题名或者教师名"
+                                                            type="text">
+        <button class="btn btn-primary btn-search" onclick="searchQuestion()">查找</button>
+    </div>
+    <div class="main-body" id="questions" style="height: 75%"></div>
+    <nav>
+        <ul class="pagination justify-content-center" id="nav">
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+        </ul>
+    </nav>
+</div>
+<div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="myModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">添加新问题</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="cid">课程编号</label>
+                    <input class="form-control" id="cid" name="cid" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="title">问题标题</label>
+                    <input class="form-control" id="title" name="title" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="pub">是否公开</label>
+                    <select id="pub" name="pub">
+                        <option value="1">公开</option>
+                        <option value="0">不公开</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" onclick="closeModal()" type="button">
+                    <span aria-hidden="true" class=""></span>关闭
+                </button>
+                <button class="btn btn-primary" data-dismiss="modal" id="btn_submit" type="button">
+                    <span aria-hidden="true" class=""></span>保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let cur_user = {}
+    $.get("/cur-user", function (data) {
+        cur_user = data
+        if (cur_user["type"] === "teacher") {
+            $("#addButton").hide()
+        }
+    })
+    let questions = []
+    const paramsStr = window.location.search
+    const params = new URLSearchParams(paramsStr)
+    let cid = params.get('cid')
+    let $cid = $('#cid')
+    let url = "/course/questions"
+    if (cid != null) {
+        url += "?cid=" + cid
+        $cid.val(cid)
+    }
+    let buffer = []
+    $.get(url, function (data) {
+        if (data["course"] != null) {
+            let $head = $("#head")
+            $head.css({
+                "position": "absolute",
+                "width": "25%",
+                "height": "100%",
+                "left": "0%",
+                "top": "0%",
+                "padding": "5%",
+                "background": "#E4DCD0"
+            })
+            let $main = $("#main")
+            $main.css({
+                "position": "absolute", "width": "75%", "height": "100%", "left": "25%", "top": "5%"
+            })
+            for (const course of data["course"]) {
+                if (course["cid"] != cid) continue
+                console.log(course)
+                $head.append($("<h1>" + course["cname"] + "</h1><br>"))
+                document.title = course["cname"]
+                $head.append($("<p class='card-text'><strong>课程编号: </strong>" + course["cid"] + "<br><br>" +
+                    "<strong>教师姓名: </strong>" + course["tname"] + "<br><br>" +
+                    "<strong>课程描述: </strong><br>&emsp;&emsp;" + course["describe"] + "<br><br>" +
+                    "<strong>课程评分: </strong>" + course["score"] + "</p>"))
+                break
+            }
+        }
+        questions = data["questions"]
+        buffer = questions
+        showAll(0)
+    })
+
+    function addNewQuestion() {
+        $('#myModal').modal('show');
+    }
+
+    $("#btn_submit").click(function () {
+        let data = {
+            cid: $cid.val(),
+            title: $("#title").val(),
+            pub: $("#pub").val()
+        }
+        $.post("/course/questions", data, function (data) {
+            if (data["success"]) {
+                window.location.reload()
+                window.location.href = "/question.html?qid=" + data["data"] + "&cid=" + cid
+            } else {
+                alert("新建问题失败")
+            }
+        })
+    })
+
+    function searchQuestion() {
+        let word = $("#search-text").val()
+        buffer = []
+        if (word === "") {
+            buffer = questions
+        } else {
+            for (const question of questions) {
+                if (question["title"].indexOf(word) !== -1 ||
+                    question["tname"].indexOf(word) !== -1 ||
+                    question["cname"].indexOf(word) !== -1
+                ) {
+                    buffer.push(question)
+                }
+            }
+        }
+        showAll(0)
+    }
+
+    function createPage(curpage) {
+        len = Math.ceil(buffer.length / 4)
+        let $nav = $("#nav")
+        $nav.empty()
+        for (let i = 0; i < len; i++) {
+            if (i === curpage)
+                $nav.append(`<li class="page-item"><a class="page-link active" href="javascript:showAll(${i})">${i + 1}</a></li>`)
+            else
+                $nav.append(`<li class="page-item"><a class="page-link" href="javascript:showAll(${i})">${i + 1}</a></li>`)
+        }
+    }
+
+    function showAll(pagenum) {
+        let $questions = $("#questions")
+        $questions.empty()
+        for (let i = pagenum * 4; i < pagenum * 4 + 4 && i < buffer.length; i++) {
+            let question = buffer[i]
+            let $container = $("<div class='card card-body container'></div>")
+            let $content = $("<div class='row'></div>")
+            let $text = $("<div class='col-md-10'></div>")
+            $text.append($("<h5>" + question["title"] + "</h5>"))
+            let $msg = $("<p class='card-text'>课程:" + question["cid"] + ". " + question["cname"] + "<br>" +
+                "教师姓名:" + question["tname"] + "<br>" +
+                "提问时间:" + question["time"] + "<br>" + "</p>")
+            if (cur_user["type"] === "student") {
+                if (cur_user["uid"] === question["stuUid"]) {
+                    if (question["stuRead"] === 0) $msg.append($("<span class=\"badge bg-danger\">未读</span>"))
+                    if (question["teaAns"] === 1) $msg.append($("<span class=\"badge bg-danger\">已回复</span>"))
+                }
+            } else {
+                if (question["teaRead"] === 0) $msg.append($("<span class=\"badge bg-danger\">未读</span>"))
+                if (question["teaAns"] === 0) $msg.append($("<span class=\"badge bg-danger\">未回复</span>"))
+            }
+            $text.append($msg)
+            $content.append($text)
+            let $button_div = $("<div class='col-sm align-items-center' style='position: relative'></div>")
+            let $button = $("<div class='center' style='width: 90px'>")
+            $button.append($(`<a class='btn btn-primary' href='/question.html?qid=${question["qid"]}&cid=${cid}'>前往问题</a>`))
+            if (question["stuUid"] === cur_user["uid"] || cur_user["type"] === "teacher") {
+                $button.append($("<button class='btn btn-danger' onclick='deleteQuestion(" + question["qid"] + ")'>删除问题</button>"))
+            }
+            $button_div.append($button)
+            $content.append($button_div)
+            $container.append($content)
+            $questions.append($container)
+        }
+        createPage(pagenum)
+    }
+
+    function closeModal() {
+        $('#myModal').modal('hide');
+    }
+
+    function deleteQuestion(qid) {
+        $.ajax({
+            method: "delete",
+            async: false,
+            url: "/course/questions?qid=" + qid,
+            success: function () {
+                window.location.reload()
+            }
+        })
+    }
+</script>
+</body>
+</html>

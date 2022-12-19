@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "/cur-user")
+@WebServlet(urlPatterns = {"/cur-user", "/alter-password"})
 @Slf4j
 public class CurrentUser extends UTF8Servlet {
     UserMapper userMapper=new UserMapper();
@@ -26,15 +26,20 @@ public class CurrentUser extends UTF8Servlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doPut(req, resp);
         User user = (User) req.getSession().getAttribute("user");
-        String password = req.getParameter("password");
+        String oldPassword = req.getParameter("old");
+        if (!user.getPassword().equals(oldPassword)) {
+            resp.getWriter().println(HttpResult.builder().message("密码错误").success(0).build());
+            return;
+        }
+        String password = req.getParameter("new");
         user.setPassword(password);
         try {
             userMapper.replace(user);
             req.getSession().setAttribute("user", user);
             resp.getWriter().println(HttpResult.successResult);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
-            resp.getWriter().println(HttpResult.failResult);
+            resp.getWriter().println(HttpResult.builder().message("数据库修改失败").success(0).build());
         }
     }
 }
