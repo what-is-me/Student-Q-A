@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 @Slf4j
 public class Sql {
     final private static DataSource ds;
+
     static {
         /*try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
@@ -27,7 +28,6 @@ public class Sql {
         pro.setProperty("url", "jdbc:mysql://127.0.0.1:3306/stu_qa?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8");
         pro.setProperty("username", "root");
         pro.setProperty("password", "root");
-        pro.setProperty("filters", "wall");
         try {
             ds = DruidDataSourceFactory.createDataSource(pro);
         } catch (Exception e) {
@@ -68,7 +68,7 @@ public class Sql {
 
     private static <T> String parse(String content, Map<String, T> map) {
         Map<String, String> kvs = new HashMap<>();
-        map.forEach((k, v) -> kvs.put("${" + k + "}", v.toString()));
+        map.forEach((k, v) -> kvs.put("${" + k + "}", v.toString().replaceAll("\\$", "RDS_CHAR_DOLLAR")));
         String pattern = "\\$\\{(.*?)}";
         Pattern p = Pattern.compile(pattern);
         Matcher m = p.matcher(content);
@@ -78,7 +78,7 @@ public class Sql {
             m.appendReplacement(sr, kvs.get(group));
         }
         m.appendTail(sr);
-        return sr.toString();
+        return sr.toString().replaceAll("RDS_CHAR_DOLLAR", "\\$");
     }
 
     public static <T> void execute(String sql, Map<String, T> mp) throws SQLException {
