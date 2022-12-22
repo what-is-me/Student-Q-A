@@ -55,7 +55,6 @@
     var res_courses = []
     $.get("./course", function (data) {
         if (data.length === 0) {
-            window.location.href = "select-course.html";
         } else {
             courses = data
             res_courses = courses
