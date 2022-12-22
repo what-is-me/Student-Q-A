@@ -138,14 +138,15 @@
 
     function searchQuestion() {
         let word = $("#search-text").val()
+        console.log(word)
         buffer = []
         if (word === "") {
             buffer = questions
         } else {
             for (const question of questions) {
-                if (question["title"].indexOf(word) !== -1 ||
+                if ((question["title"].indexOf(word) !== -1 ||
                     question["tname"].indexOf(word) !== -1 ||
-                    question["cname"].indexOf(word) !== -1
+                    question["cname"].indexOf(word) !== -1) && question["forbidden"] === 0
                 ) {
                     buffer.push(question)
                 }
@@ -182,6 +183,7 @@
                 if (cur_user["uid"] === question["stuUid"]) {
                     if (question["stuRead"] === 0) $msg.append($("<span class=\"badge bg-danger\">未读</span>"))
                     if (question["teaAns"] === 1) $msg.append($("<span class=\"badge bg-danger\">已回复</span>"))
+                    else $msg.append($("<span class=\"badge bg-info\">未回复</span>"))
                 }
             } else {
                 if (question["teaRead"] === 0) $msg.append($("<span class=\"badge bg-danger\">未读</span>"))
