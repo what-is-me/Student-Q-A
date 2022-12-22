@@ -37,13 +37,13 @@ insert into stu_qa.questionhead(stuUid, cid, title, pub)
 values (11, 1, 'hello world', 0);
 insert into stu_qa.questionbody(qid, name, text)
 VALUES (1, 's1', '### hello world
-\n\n
-- this is the first test question body.\n
-- hihihi\n\n
 
-$\\sum_{i=1}^n i^2 = ?$
-\n\n
-```python\n
-print("hello world")\n
+- this is the first test question body.
+- hihihi
+
+$$\\sum_{i=1}^n i^2 = ?$$
+
+```python
+print("hello world")
 ```
 ')
