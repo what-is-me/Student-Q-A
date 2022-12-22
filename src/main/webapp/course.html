@@ -113,7 +113,7 @@
         }
         questions = data["questions"]
         buffer = questions
-        showAll(0)
+        searchQuestion()
     })
 
     function addNewQuestion() {
@@ -140,18 +140,17 @@
         let word = $("#search-text").val()
         console.log(word)
         buffer = []
-        if (word === "") {
-            buffer = questions
-        } else {
-            for (const question of questions) {
-                if ((question["title"].indexOf(word) !== -1 ||
-                    question["tname"].indexOf(word) !== -1 ||
-                    question["cname"].indexOf(word) !== -1) && question["forbidden"] == 0
-                ) {
-                    buffer.push(question)
-                }
+
+        for (const question of questions) {
+            console.log(question)
+            if ((question["title"].indexOf(word) !== -1 ||
+                question["tname"].indexOf(word) !== -1 ||
+                question["cname"].indexOf(word) !== -1) && question["forbidden"] == 0
+            ) {
+                buffer.push(question)
             }
         }
+
         showAll(0)
     }
 
