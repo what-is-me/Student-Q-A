@@ -146,7 +146,7 @@
             for (const question of questions) {
                 if ((question["title"].indexOf(word) !== -1 ||
                     question["tname"].indexOf(word) !== -1 ||
-                    question["cname"].indexOf(word) !== -1) && question["forbidden"] === 0
+                    question["cname"].indexOf(word) !== -1) && question["forbidden"] == 0
                 ) {
                     buffer.push(question)
                 }
