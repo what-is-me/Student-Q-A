@@ -96,6 +96,13 @@
   </div>
 </div>
 <script>
+  $.get("cur-user", function (data) {
+    console.log(data)
+    if (data == null) {
+      window.location.href = "login.html"
+    }
+    window.location.href = "/" + data["type"] + "/index.html"
+  })
   const queryUrl = '../teacher';
   $('#grid').bootstrapTable({
     toolbar: "#toolbar",

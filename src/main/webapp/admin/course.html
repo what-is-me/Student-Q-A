@@ -13,14 +13,15 @@
     <script src="https://cdn.bootcss.com/bootstrap-table/1.21.1/locale/bootstrap-table-zh-CN.min.js"></script>
     <title>课程管理</title>
     <style>
-        #sidebar{
+        #sidebar {
             width: 20%;
             position: absolute;
             left: 0;
             top: 0;
             height: 100%;
         }
-        #main_page{
+
+        #main_page {
             width: 75%;
             position: absolute;
             right: 2.5%;
@@ -114,6 +115,13 @@
     </div>
 </div>
 <script>
+    $.get("cur-user", function (data) {
+        console.log(data)
+        if (data == null) {
+            window.location.href = "login.html"
+        }
+        window.location.href = "/" + data["type"] + "/index.html"
+    })
     const queryUrl = '../course';
     $('#grid').bootstrapTable({
         toolbar: "#toolbar",
